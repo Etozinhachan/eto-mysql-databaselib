@@ -1,7 +1,5 @@
 import databaselib.etodatabaselib as mycooldatabase
-import databaselib.  etohashlib as mycoolhashlib
-
-
+import databaselib.etohashlib as mycoolhashlib
 
 idColumnName = "id"
 usernameColumnName = "username"
@@ -79,11 +77,13 @@ def registerUser(username:str, password:str) -> User:
         (hashed_password, salt) = mycoolhashlib.generateSaltHash(password)
         mycooldatabase.createTable(usersTableName, {f"{idColumnName}": "INT PRIMARY KEY NOT NULL AUTO_INCREMENT", f"{usernameColumnName}": "VARCHAR(100) NOT NULL", f"{passwordColumnName}": "VARCHAR(150) NOT NULL", f"{saltColumnName}": "VARCHAR(150) NOT NULL"}, True)
 
-        mycooldatabase.insert_rows(usersTableName, {f"{usernameColumnName}": f"{username}", f"{passwordColumnName}": f"{hashed_password}", f"{saltColumnName}": f"{salt}"}, [f"{usernameColumnName}"])
-        notStructuredUser = mycooldatabase.get_rows(usersTableName, [f"{idColumnName}", f"{usernameColumnName}", f"{passwordColumnName}"], f"{usernameColumnName} = '{username}'")  
-        notStructuredUser = notStructuredUser[0]
+        rows_inserted:bool = mycooldatabase.insert_rows(usersTableName, {f"{usernameColumnName}": f"{username}", f"{passwordColumnName}": f"{hashed_password}", f"{saltColumnName}": f"{salt}"}, [f"{usernameColumnName}"])
+        if rows_inserted:
+            notStructuredUser = mycooldatabase.get_rows(usersTableName, [f"{idColumnName}", f"{usernameColumnName}", f"{passwordColumnName}"], f"{usernameColumnName} = '{username}'")  
+            notStructuredUser = notStructuredUser[0]
 
-        return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
+            return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
+        return None
     except ValueError:
         print('rawr')
 

@@ -10,8 +10,13 @@ class Database():
         self.user = user
         self.password = password
         self.db = db
+        
+    def __repr__(self) -> str:
 
-database:Database = None
+        return f"\nDatabase Connection Info:\n{"":->20}\nHost: {self.host}\nUser: {self.user}\nPassword: {self.password}\nDb: {self.db}\n{"":->20}"
+
+
+database:Database = Database("your hostname here", "your database user here", "your database password here", "you database name here")
 
 def connect():
     # Here you insert the credentials for your database
@@ -24,7 +29,7 @@ def connect():
             cursorclass= pymysql.cursors.DictCursor
     )
 
-conn = connect()
+conn = None
 
 def reconnect():
     global conn
@@ -156,7 +161,7 @@ def get_rows(table:str, columns:list, condition:str = None):
 
 # BE AWARE THAT USING THE DONT_REPEAT TUPLE FOR SMART INSERTS WILL DECREASE THE PERFORMANCE SINCE FOR EACH ELEMENT IN THE DONT_REPEAT TUPLE IT WILL EXECUTE 1 SELECT QUERY
 
-def insert_rows(table: str, args:dict, dont_repeat:list = None):
+def insert_rows(table: str, args:dict, dont_repeat:list = None) -> bool:
 
     reconnect()
     try:
@@ -227,8 +232,10 @@ def insert_rows(table: str, args:dict, dont_repeat:list = None):
         #print('Rows inserted!')
     except ValueError as e:
         print(e)
+        return False
     finally:
         close_connection()
+        return True
 
 def edit_rows(table: str, args:dict, condition:str, dont_repeat:list = None) -> bool:
     reconnect()
