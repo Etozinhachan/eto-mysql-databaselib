@@ -1,0 +1,28 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eto-mysql-databaselib"
+version = "1.1.0"
+description = "A library with the sole purpose of making connections to mysql databases easier"
+readme = "README.md"
+authors = [{name = "Eto_chan", email = "etochan1144@gmail.com"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["database", "mysql"]
+dependencies = [
+    "pymysql",
+    "cryptography",
+    "pyargon2"
+]
+requires-python = ">=3.12"
+
+[project.urls]
+Homepage = "https://github.com/Etozinhachan/eto-mysql-databaselib"
