@@ -163,6 +163,7 @@ def get_rows(table:str, columns:list, condition:str = None):
 
 def insert_rows(table: str, args:dict, dont_repeat:list = None) -> bool:
 
+    return_value = True
     reconnect()
     try:
         with conn.cursor() as cursor:
@@ -232,12 +233,13 @@ def insert_rows(table: str, args:dict, dont_repeat:list = None) -> bool:
         #print('Rows inserted!')
     except ValueError as e:
         print(e)
-        return False
+        return_value = False
     finally:
         close_connection()
-        return True
+        return return_value
 
 def edit_rows(table: str, args:dict, condition:str, dont_repeat:list = None) -> bool:
+    return_value = True
     reconnect()
     try:
         with conn.cursor() as cursor:
@@ -301,7 +303,7 @@ def edit_rows(table: str, args:dict, condition:str, dont_repeat:list = None) -> 
         #print('Rows edited!')
     except ValueError as e:
         print(e)
-        return False
+        return_value = False
     finally:
         close_connection()
-        return True
+        return return_value

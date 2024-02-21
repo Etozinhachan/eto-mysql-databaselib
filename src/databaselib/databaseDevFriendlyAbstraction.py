@@ -109,3 +109,27 @@ def loginUser(username:str, password:str) -> User:
         return None
     except ValueError:
         print('login rawr :c')
+
+def editUser(user_to_update:User, new_username:str = None, new_password:str = None) -> User:
+    try:
+        if not userExists(user_to_update.username):
+            return None
+        if new_username == None and new_password == None:
+            return user_to_update
+        
+        username_column_update_string = None if new_username == None else usernameColumnName
+        username_value_update_string = None if new_username == None else new_username
+
+        password_column_update_string = None if new_password == None else passwordColumnName
+        password_value_update_string = None if new_password == None else new_password
+
+        edition_suceedeed = mycooldatabase.edit_rows(usersTableName, {username_column_update_string: username_value_update_string, password_column_update_string: password_value_update_string}, f"{idColumnName} = {user_to_update.id}", [f"{usernameColumnName}"])
+        if edition_suceedeed:
+            print('rawr')
+            notStructuredUser = mycooldatabase.get_rows(usersTableName, [f"{idColumnName}", f"{usernameColumnName}", f"{passwordColumnName}"], f"{idColumnName} = '{user_to_update.id}'")  
+            notStructuredUser = notStructuredUser[0]
+
+            return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
+        return None
+    except ValueError:
+        print('edit rawr :c')
