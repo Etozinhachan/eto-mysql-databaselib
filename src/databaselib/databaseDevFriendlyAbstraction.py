@@ -51,7 +51,7 @@ class User():
     def password(self, new_password):
         (hashed_password, salt) = mycoolhashlib.generateSaltHash(new_password)
         editionSucceeded:bool = mycooldatabase.edit_rows(usersTableName, {f"{passwordColumnName}": f"{hashed_password}", f"{saltColumnName}": f"{salt}"}, f"{idColumnName} = {self.id}")
-        print(editionSucceeded)
+        #print(editionSucceeded)
         if editionSucceeded:
             self._password = hashed_password
 
@@ -85,7 +85,8 @@ def registerUser(username:str, password:str) -> User:
             return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
         return None
     except ValueError:
-        print('rawr')
+        #print('rawr')
+        pass
 
 def loginUser(username:str, password:str) -> User:
     try:
@@ -108,7 +109,8 @@ def loginUser(username:str, password:str) -> User:
             return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
         return None
     except ValueError:
-        print('login rawr :c')
+        #print('login rawr :c')
+        pass
 
 def editUser(user_to_update:User, new_username:str = None, new_password:str = None) -> User:
     try:
@@ -125,11 +127,11 @@ def editUser(user_to_update:User, new_username:str = None, new_password:str = No
 
         edition_suceedeed = mycooldatabase.edit_rows(usersTableName, {username_column_update_string: username_value_update_string, password_column_update_string: password_value_update_string}, f"{idColumnName} = {user_to_update.id}", [f"{usernameColumnName}"])
         if edition_suceedeed:
-            print('rawr')
             notStructuredUser = mycooldatabase.get_rows(usersTableName, [f"{idColumnName}", f"{usernameColumnName}", f"{passwordColumnName}"], f"{idColumnName} = '{user_to_update.id}'")  
             notStructuredUser = notStructuredUser[0]
 
             return User(notStructuredUser.get(f'{idColumnName}'), notStructuredUser.get(f'{usernameColumnName}'), notStructuredUser.get(f'{passwordColumnName}'))
         return None
     except ValueError:
-        print('edit rawr :c')
+        #print('edit rawr :c')
+        pass

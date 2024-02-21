@@ -232,7 +232,7 @@ def insert_rows(table: str, args:dict, dont_repeat:list = None) -> bool:
 
         #print('Rows inserted!')
     except ValueError as e:
-        print(e)
+        #print(e)
         return_value = False
     finally:
         close_connection()
