@@ -34,12 +34,6 @@ class User():
     
     # Setters
 
-    @id.setter
-    def id(self, new_id) -> None:
-
-        print("Impossible to change the id of a User")
-        return None
-
     @username.setter
     def username(self, new_username):
         
@@ -56,7 +50,7 @@ class User():
             self._password = hashed_password
 
 class LoginError(Exception):
-    pass
+   pass
 
 
 def userExists(username: str) -> bool:
