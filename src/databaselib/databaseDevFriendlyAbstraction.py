@@ -118,8 +118,13 @@ def editUser(user_to_update:User, new_username:str = None, new_password:str = No
 
         password_column_update_string = None if new_password == None else passwordColumnName
         password_value_update_string = None if new_password == None else new_password
+        (hashed_password, salt) = (None, None)
+        salt_column_update_string = None
+        if not password_column_update_string == None:
+            (hashed_password, salt) = mycoolhashlib.generateSaltHash(password_value_update_string)
+            salt_column_update_string = saltColumnName
 
-        edition_suceedeed = mycooldatabase.edit_rows(usersTableName, {username_column_update_string: username_value_update_string, password_column_update_string: password_value_update_string}, f"{idColumnName} = {user_to_update.id}", [f"{usernameColumnName}"])
+        edition_suceedeed = mycooldatabase.edit_rows(usersTableName, {username_column_update_string: username_value_update_string, password_column_update_string: hashed_password, salt_column_update_string: salt}, f"{idColumnName} = {user_to_update.id}", [f"{usernameColumnName}"])
         if edition_suceedeed:
             notStructuredUser = mycooldatabase.get_rows(usersTableName, [f"{idColumnName}", f"{usernameColumnName}", f"{passwordColumnName}"], f"{idColumnName} = '{user_to_update.id}'")  
             notStructuredUser = notStructuredUser[0]
